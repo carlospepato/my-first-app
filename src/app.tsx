@@ -1,15 +1,38 @@
 
 import logo from './assets/Logo.png'
+import { useState } from 'react';
 import { CreateTask } from './components/createTask';
 import { BtnCreateTask } from './components/btnCreateTask';
 import { InfoTask } from './components/infoTask';
 import { NoTask } from './components/noTask';
-import { useState } from 'react';
-import { DisplayTask } from './components/display';
+import { CardTask } from './components/cardTask';
 
 export function App() {
-  const [task, setTask] = useState('')
-  const [submittedTask, setSubmittedTask] = useState('');
+  const [task, setTask] = useState<string>('')
+  const [submittedTask, setSubmittedTasks] = useState<string[]>([]);
+  const [doneTask, setDoneTask] = useState<number[]>([]);
+
+  const handleAddTask = () => {
+    if (task.trim() !== '') {
+        setSubmittedTasks([...submittedTask, task]);
+        setTask('');
+    }
+};
+
+  const deleteTask = (index: number) => {
+    const newTasks = [...submittedTask];
+    newTasks.splice(index, 1);
+    setSubmittedTasks(newTasks);
+    setDoneTask(doneTask.filter(i => i !== index));
+  };
+
+    const taskCheckeded = (index: number) => {
+      if (doneTask.includes(index)) {
+          setDoneTask(doneTask.filter(i => i !== index));
+      } else {
+          setDoneTask([...doneTask, index]);
+      }
+  };
 
   return (
     <>
@@ -17,18 +40,37 @@ export function App() {
           <img src={logo} alt="logo TodoList" />
       </div>
       <div className='flex flex-col-2 gap-4 justify-center -my-6'>
-        <CreateTask task={task} setTask={setTask}/>
-        <BtnCreateTask task={task} setSubmittedTask={setSubmittedTask}/>
-        <DisplayTask submittedTask={submittedTask} />
+        <CreateTask 
+          task={task}
+          setTask={setTask}/>
+        <BtnCreateTask 
+          task={task}
+          handleAddTask={handleAddTask}/>
       </div>
-      <div className="flex flex-col justify-center items-center">
-        <div className='flex items-center justify-between w-[46rem] mt-24 border-b-2 border-zinc-800'>
-            <InfoTask title='Tarefas criadas' fontColor='text-sky-500' textContent='0'/>
-            <InfoTask title='Concluidas' fontColor='text-violet-500' textContent='0'/>
+      <div className="flex flex-col w-[46rem] gap-4 mx-auto mt-40">
+        <div className='flex items-center justify-between w-full border-b-2 border-zinc-800'>
+            <InfoTask
+              fontColor='text-sky-500'
+              taskCreate={submittedTask.length}
+              taskDone={doneTask.length}/>
         </div> 
-        <div className="flex flex-col justify-center items-center mt-24 gap-2">
-          <NoTask/>
-        </div>
+        {submittedTask.length === 0 ? (
+          <div className="flex flex-col justify-center items-center mt-24 gap-2">
+            <NoTask/>
+          </div>
+        ) : (
+          submittedTask.map((task, index) =>(
+            <div key={index} className="bg-zinc-800 h-18 w-full p-4 flex flex-col gap-2 rounded-lg border-2 border-zinc-700">
+              <CardTask 
+                textContent={task}
+                del={deleteTask}
+                index={index}
+                checkDoneTask={taskCheckeded}
+                isCheck={doneTask.includes(index)}
+              />
+            </div>
+          ))
+        )}
       </div>
     </>
   )
