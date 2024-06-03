@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -10,14 +11,29 @@ const loginSchema = z.object({
 type LoginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm(){
-
+    const navigate = useNavigate();
     const { register, handleSubmit, formState:{ errors } } = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema)
     });
 
-    function handleSubmitForm(data: LoginSchema){
+    async function handleSubmitForm(data: LoginSchema){
         console.log(data);
 
+        const response = await fetch("http://localhost:3333/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if(response.status === 200){
+            console.log("Login successful");
+            navigate("/home");
+        }else{
+            alert("Invalid email or password")
+            console.log(response.status + "Invalid email or password");
+        }
     }
 
     return(

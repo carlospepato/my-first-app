@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 const accountSchema = z.object({
     name: z.string().min(3),
@@ -15,14 +16,31 @@ const accountSchema = z.object({
 type AccountSchema = z.infer<typeof accountSchema>;
 
 export function CreateAccountForm(){
-
+    const navigate = useNavigate();
     const { register, handleSubmit, formState:{ errors } } = useForm<AccountSchema>({
         resolver: zodResolver(accountSchema)
     });
 
-    function handleSubmitForm(data: AccountSchema){
+    async function handleSubmitForm(data: AccountSchema){
         console.log(data);
 
+        try{
+            const response = await fetch("http://localhost:3333/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            if(response.status === 201){
+                console.log("User created successfully");
+                navigate("/login");
+            }else{
+                console.log("Error creating user");
+            }
+        }catch(error){
+            console.error(error);
+        }
     }
 
     return(
