@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { config } from "../../../config.ts";
+//import { config } from "../../../config.ts";
 
 const passwordSchema = z.object({
     email: z.string().email(),
@@ -24,7 +24,7 @@ export function ChangePassoword(){
     async function handleSubmitForm(data: PasswordSchema){
         console.log(data);
         try{
-            const baseUrl = config.backendUrl;
+            const baseUrl = "https://todo-app-gsc5.vercel.app";
             const response = await fetch(`${baseUrl}/changepassword`, {
                 method: "PUT",
                 headers: {

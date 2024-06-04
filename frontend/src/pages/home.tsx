@@ -9,7 +9,7 @@ import { CardTask } from '../components/cardTask';
  //import { config } from "../../config.ts"
 
 export function Home() {
-   const baseUrl = 'http://localhost:3333';
+  const baseUrl = "https://todo-app-gsc5.vercel.app";
   const [task, setTask] = useState<string>('')
   const [submittedTask, setSubmittedTasks] = useState<string[]>([]);
   const [doneTask, setDoneTask] = useState<number[]>([]);
