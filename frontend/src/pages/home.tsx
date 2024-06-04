@@ -6,14 +6,16 @@ import { BtnCreateTask } from '../components/btnCreateTask';
 import { InfoTask } from '../components/infoTask';
 import { NoTask } from '../components/noTask';
 import { CardTask } from '../components/cardTask';
+ //import { config } from "../../config.ts"
 
 export function Home() {
+   const baseUrl = 'http://localhost:3333';
   const [task, setTask] = useState<string>('')
   const [submittedTask, setSubmittedTasks] = useState<string[]>([]);
   const [doneTask, setDoneTask] = useState<number[]>([]);
 
   useEffect(()=>{
-    fetch('http://localhost:3333/users')
+    fetch(`${baseUrl}/users`)
     .then(response => response.json())
     .then(json => {
      console.log(json)

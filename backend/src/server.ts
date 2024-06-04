@@ -1,5 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config();
+import { join } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL);
+console.log('PORT:', process.env.PORT);
 
 import fastify from "fastify";
 import cors from "@fastify/cors";
@@ -10,7 +15,7 @@ const prisma = new PrismaClient({ log: ["query"] });
 const server = fastify({ logger: true });
 
 server.register(cors, {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
 });
 
