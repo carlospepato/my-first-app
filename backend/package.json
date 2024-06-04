@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
-    "vercel-build": "npx prisma migrate deploy"
+    "vercel-build": "npx prisma migrate deploy",
+    "build": "tsx build --env-file .env src/server.ts",
+    "start": "node dist/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlos Pepato",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.13.0",
@@ -21,5 +23,8 @@
     "fastify": "^4.27.0",
     "prisma": "^5.14.0",
     "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
