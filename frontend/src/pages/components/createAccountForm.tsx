@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../../config.ts";
 
 const accountSchema = z.object({
     name: z.string().min(3),
@@ -25,7 +26,8 @@ export function CreateAccountForm(){
         console.log(data);
 
         try{
-            const response = await fetch("http://localhost:3333/users", {
+            const baseUrl = config.backendUrl;
+            const response = await fetch(`${baseUrl}/users`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

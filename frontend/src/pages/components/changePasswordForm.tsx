@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../../config.ts";
 
 const passwordSchema = z.object({
     email: z.string().email(),
@@ -23,7 +24,8 @@ export function ChangePassoword(){
     async function handleSubmitForm(data: PasswordSchema){
         console.log(data);
         try{
-            const response = await fetch("http://localhost:3333/changepassword", {
+            const baseUrl = config.backendUrl;
+            const response = await fetch(`${baseUrl}/changepassword`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

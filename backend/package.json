@@ -13,7 +13,7 @@
   "author": "Carlos Pepato",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.13.0",
+    "@types/node": "^20.14.1",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   },
